@@ -1,0 +1,29 @@
+[project]
+name = "grpo"
+version = "1.0.0"
+description = "GRPO training environment"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "accelerate>=1.5.2",
+    "alpaca-eval",
+    "jupyter>=1.1.1",
+    "math-verify[antlr4-13-2]>=0.7.0",
+    "pylatexenc==2.10",
+    "notebook>=7.4.2",
+    "pytest>=8.3.5",
+    "torch==2.7.1+cu128",
+    "tqdm>=4.67.1",
+    "transformers>=4.55.0",
+    "typer>=0.15.4",
+    "vllm==0.10.1",
+    "wandb>=0.19.8",
+    "xopen>=2.0.2",
+    "einops"
+]
+
+[build-system]
+requires = ["setuptools"]
+
+[tool.setuptools.packages.find]
+exclude = ["logs*", "wandb*", "pylog*", "MATH*"]
+

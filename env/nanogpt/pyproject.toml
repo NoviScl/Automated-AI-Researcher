@@ -1,0 +1,21 @@
+[project]
+name = "nanogpt"
+version = "1.0.0"
+description = "NanoGPT training environment"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "tqdm",
+    "torch",
+    "huggingface-hub",
+    "tiktoken",
+    "datasets",
+    "wandb"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = ["logs*", "wandb*", "pylog*", "fineweb10B*"]
