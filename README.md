@@ -5,7 +5,11 @@ We share the research environments used in our paper **Towards Execution-Grounde
 ## Environments
 
 ### Post-training environment: GRPO on math reasoning
-This is a stand-alone directory that implements the GRPO algorithm from scratch and finetunes a Qwen2.5-Math-1.5B model on the MATH dataset. To run the baseline GRPO algorithm, use `cd env/grpo && bash run_job.sh`.
+This is a stand-alone directory that implements the GRPO algorithm from scratch and finetunes a Qwen2.5-Math-1.5B model on the MATH dataset. To run the baseline GRPO algorithm, use `cd env/grpo && bash run_job.sh`. This training script runs on a single B200 GPU and contains that default hyper-parameters that we give to the LLM agent (including both the ideator model and executor model). 
+
+We perform the model training and rollout sampling on one single GPU in this GRPO implementation. If you have a GPU with less memory than B200, we also provide another training script `env/grpo/run.sh`. We have tested it on one single A100 (80GB). 
+
+Assuming you have logged into your Wandb account, the training script will automatically log the experiment in your Wandb account with specified project name and run name.  
 
 ### Pre-training environment: nanoGPT on FineWeb
 This is a stand-alone directory that implements the nanoGPT baseline to pretrain GPT-2 model on the FineWeb dataset. To run the nanoGPT environment, first download the fineweb data using `cd env/nanogpt && uv run python fineweb.py`, and then run the training command `cd env/nanogpt && bash run_job.sh`.
