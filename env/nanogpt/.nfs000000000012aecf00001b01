@@ -1,5 +1,5 @@
 #!/bin/bash
-wandb_name=8xh100dev
+wandb_name=2gpu_debug
 timeout=2h
 
 export WANDB_NAME=$wandb_name
@@ -7,9 +7,10 @@ export WANDB_PROJECT=nanogpt_ES_claude
 
 if ! timeout $timeout uv run torchrun \
     --standalone \
-    --nproc_per_node=8 \
-        train.py; then
+    --nproc_per_node=2 \
+    train.py \
+    --batch_size 128; then
     echo "train.py failed with exit code $?. The script will continue."
 fi
 
-echo "run_job.sh has finished."
+echo "run.sh has finished."

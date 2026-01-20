@@ -310,8 +310,8 @@ def print0(*args, **kwargs):
 @dataclass
 class Hyperparameters:
     # data
-    input_bin = "fineweb10B/fineweb_train_*.bin"
-    input_val_bin = "fineweb10B/fineweb_val_*.bin"
+    input_bin = "/juice5b/scr5b/nlp/aihinton/fineweb10B/fineweb_train_*.bin"
+    input_val_bin = "/juice5b/scr5b/nlp/aihinton/fineweb10B/fineweb_val_*.bin"
     wandb_name = os.environ.get("WANDB_NAME", "nanogpt")
     wandb_project = os.environ.get("WANDB_PROJECT", "nanogpt-training")
     wandb_log = True  # enable wandb logging by default
@@ -364,6 +364,16 @@ if __name__ == "__main__":
     val_steps = args.val_tokens // (B * T * ddp_world_size)
 
     tokens_per_fwdbwd = B * T * ddp_world_size
+    if ddp_rank == 0:
+        print(f"B={B}, T={T}, ddp_world_size={ddp_world_size}")
+        print(f"tokens_per_fwdbwd={tokens_per_fwdbwd}")
+        print(f"args.total_batch_size={args.total_batch_size}")
+    # Adjust batch size to match total_batch_size requirement
+    if args.total_batch_size != tokens_per_fwdbwd:
+        B = args.total_batch_size // (T * ddp_world_size)
+        tokens_per_fwdbwd = B * T * ddp_world_size
+        if ddp_rank == 0:
+            print(f"Adjusted B to {B} to match total_batch_size")
     assert args.total_batch_size == tokens_per_fwdbwd
 
     # set up a context manager following the desired dtype and device

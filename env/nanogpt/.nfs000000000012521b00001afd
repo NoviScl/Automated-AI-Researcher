@@ -7,7 +7,7 @@ export WANDB_PROJECT=nanogpt_ES_claude
 
 if ! timeout $timeout uv run torchrun \
     --standalone \
-    --nproc_per_node=8 \
+    --nproc_per_node=2 \
         train.py; then
     echo "train.py failed with exit code $?. The script will continue."
 fi

@@ -5,18 +5,22 @@ We share the research environments used in our paper **Towards Execution-Grounde
 ## Environments
 
 ### Post-training environment: GRPO on math reasoning
-This is a stand-alone directory that implements the GRPO algorithm from scratch and finetunes a Qwen2.5-Math-1.5B model on the MATH dataset. To run the baseline GRPO algorithm, use `cd env/grpo && bash run_job.sh`. This training script runs on a single B200 GPU and contains that default hyper-parameters that we give to the LLM agent (including both the ideator model and executor model). 
+`env/grpo`: This is a stand-alone directory that implements the GRPO algorithm from scratch and finetunes a Qwen2.5-Math-1.5B model on the MATH dataset. To run the baseline GRPO algorithm, use `cd env/grpo && bash run_job.sh`. This training script runs on a single B200 GPU and contains that default hyper-parameters that we give to the LLM agent (including both the ideator model and executor model). 
 
 We perform the model training and rollout sampling on one single GPU in this GRPO implementation. If you have a GPU with less memory than B200, we also provide another training script `env/grpo/run.sh`. We have tested it on one single A100 (80GB). 
 
 Assuming you have logged into your Wandb account, the training script will automatically log the experiment in your Wandb account with specified project name and run name.  
 
 ### Pre-training environment: nanoGPT on FineWeb
-This is a stand-alone directory that implements the nanoGPT baseline to pretrain GPT-2 model on the FineWeb dataset. To run the nanoGPT environment, first download the fineweb data using `cd env/nanogpt && uv run python fineweb.py`, and then run the training command `cd env/nanogpt && bash run_job.sh`.
+`env/nanogpt`: This is a stand-alone directory that implements the nanoGPT baseline to pretrain GPT-2 model on the FineWeb dataset. To run the nanoGPT environment, first download the fineweb data using `cd env/nanogpt && uv run python fineweb.py`, and then run the training command `cd env/nanogpt && bash run_job.sh`. Note that `run_job.sh` is the default script we used during our experiments, where each run has to use 8 GPUs. 
+
+If you want to do a quick debugging, we provide `env/nanogpt/run.sh` that is tested on 2 H200s. You can also adjust `--nproc_per_node=2` and `--batch_size 128` based on how many GPUs you are actually using. Again, all experiment logs will be automatically logged on your Wandb account. 
+
+Before running, make sure to change `input_bin` and `input_val_bin` in `env/nanogpt/train.py` to the actual directories that you store the downloaded FineWeb data. 
 
 ## Evolutionary Search Scaffold
 
-```agent/``` implements our execution-guided evolutionary search scaffold. Running ```agent/full_pipeline.py``` will run the full pipeline that: generates ideas, generates the code diffs to implement the ideas, patches the code diffs into the environments and uploads the codebases. Our automated executor will then allocates the codebases to available GPUs and executes the training jobs.
+`agent/` implements our execution-guided evolutionary search scaffold. Running `agent/full_pipeline.py` will run the full pipeline that: generates ideas, generates the code diffs to implement the ideas, patches the code diffs into the environments and uploads the codebases. Our automated executor will then allocates the codebases to available GPUs and executes the training jobs.
 
 ## Idea Trajectories 
 
