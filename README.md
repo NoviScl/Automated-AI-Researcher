@@ -22,9 +22,13 @@ Before running, make sure to change `input_bin` and `input_val_bin` in `env/nano
 
 `agent/` implements our execution-guided evolutionary search scaffold. Running `agent/full_pipeline.py` will run the full pipeline that: generates ideas, generates the code diffs to implement the ideas, patches the code diffs into the environments and uploads the codebases. Our automated executor will then allocates the codebases to available GPUs and executes the training jobs.
 
+To run the full pipeline, run `python -m agent.full_pipeline` from the main directory. Note that you need to specify your API keys in a file called `keys.json` which needs to stored in the main directory. Specify your OpenAI API key as `api_key`, Anthropic API key as `anthropic_key`, or any other model provided you want to use (including models supported through Together AI and DeepSeek API). Once you run it, you should see the generated ideas and code diffs. The generated code diffs will be patched into the original environment codebases and zipped, which will then be uploaded to Huggingface for automatic execution. Beyond this point, you would need to implement your own executor API to grab those zipped repos and launch GPU jobs to execute them. Once they are executed, all experiments will be logged on Wandb, and our script will try to grab the training logs from the specified Wandb project name to use the execution results for the next round of idea generation. 
+
+If you just want to look at our idea generation prompts, look at `agent_call_idea_evolutionary_exploit` and `agent_call_idea_evolutionary_explore` functions in `agent/evolutionary_search.py` for the update steps, as well as the `agent_call_idea_simple` function in `agent/agent.py` for sampling ideas at epoch 0. 
+
 ## Idea Trajectories 
 
-We share the full idea trajectories from our evolutionary search experiments. 
+We share the full idea trajectories from our evolutionary search experiments, including the natural language ideas, code diffs, and the execution results. 
 
 | Run                       | Trajectory Link                                                                                     |
 |---------------------------|-----------------------------------------------------------------------------------------------------|

@@ -15,14 +15,16 @@ def context_prompt(base_dir = "env_grpo"):
     prompt_parts = []
 
     for root, dirs, files in os.walk(base_dir):
+        dirs[:] = [d for d in dirs if not d.startswith(".")]
         for file in files:
             if file.endswith(".py") or file.endswith(".sh"):
                 file_path = os.path.join(root, file)
                 if file == "evaluate.py":
                     prompt_parts.append(f"===== {file_path} =====\nThis file is reserved for evaluating the model. You not allowed to read or modify this file.\n")
-                elif file == "fineweb.py":
-                    continue ## skip the data processing script
+                elif file == "fineweb.py" or file == "run.sh":
+                    continue ## skip the data processing script or debug script
                 else:
+                    print (file)
                     with open(file_path, "r", encoding="utf-8") as f:
                         lines = f.readlines()
                     numbered_content = "".join(f"{i+1}: {line}" for i, line in enumerate(lines))

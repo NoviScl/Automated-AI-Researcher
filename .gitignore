@@ -3,3 +3,4 @@ wandb/
 __pycache__/
 **/uv.lock
 pylog124m/
+keys.json

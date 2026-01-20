@@ -43,7 +43,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--num_ideas_per_epoch", type=int, default=80)
-    parser.add_argument("--continue_from_epoch", type=int, default=7)
+    parser.add_argument("--continue_from_epoch", type=int, default=0)
     parser.add_argument("--skip_log_retrieval_when_continue", action="store_true")
     parser.add_argument("--skip_idea_generation_when_continue", action="store_true")
     parser.add_argument("--run_name", type=str, default="nanogpt_claude_opus_bsz80")
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("--project", type=str, default="nanogpt_ES_claude")
     parser.add_argument("--model_name", type=str, default="claude-opus-4-5")
     args = parser.parse_args()
-    
+        
     epochs = args.epochs
     num_ideas_per_epoch = args.num_ideas_per_epoch
     run_name = args.run_name
@@ -61,7 +61,6 @@ if __name__ == "__main__":
     else:
         start_epoch = args.continue_from_epoch
         
-    
     for epoch in range(start_epoch, epochs):
         if epoch >= args.continue_from_epoch and not args.skip_idea_generation_when_continue:
             # generate ideas 
